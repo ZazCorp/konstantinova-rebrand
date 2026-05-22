@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Цены — Константинова Ирина Валерьевна</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine: #5b054a;
+    --wine-deep: #2b0222;
+    --wine-mid: #420339;
+    --blush: #f5e6f0;
+    --blush-deep: #e8c9de;
+    --milk: #faf7f5;
+    --gray-soft: #e8e4e2;
+    --gray-light: #f2eeec;
+    --text-dark: #1a0f17;
+    --text-mid: #5a4a55;
+    --text-light: #9a8a95;
+    --white: #ffffff;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--milk); color: var(--text-dark); overflow-x: hidden; cursor: none; }
+
+  /* CURSOR */
+  .cursor { position: fixed; width: 10px; height: 10px; background: var(--wine); border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%,-50%); transition: width .3s, height .3s, background .3s; }
+  .cursor-ring { position: fixed; width: 36px; height: 36px; border: 1px solid rgba(91,5,74,.4); border-radius: 50%; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .3s, height .3s; }
+  .cursor-hover .cursor { width: 6px; height: 6px; }
+  .cursor-hover .cursor-ring { width: 52px; height: 52px; border-color: rgba(91,5,74,.6); }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--milk); }
+  ::-webkit-scrollbar-thumb { background: var(--wine); border-radius: 2px; }
+
+  /* PROGRESS */
+  .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: linear-gradient(to right, var(--wine), #d4a0c0); z-index: 9999; transition: width .1s; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 28px 60px; display: flex; align-items: center; justify-content: space-between; transition: all .6s ease; }
+  nav.scrolled { padding: 16px 60px; background: rgba(250,247,245,.92); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(91,5,74,.08); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; letter-spacing: .1em; color: var(--white); text-decoration: none; text-transform: uppercase; transition: color .4s; }
+  nav.scrolled .nav-logo { color: var(--wine); }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a { font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.85); text-decoration: none; font-weight: 400; position: relative; transition: color .3s; }
+  .nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px; background: var(--wine); transition: width .4s; }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-links a.active { color: var(--blush); }
+  .nav-links a.active::after { width: 100%; background: var(--blush); }
+  nav.scrolled .nav-links a { color: var(--text-mid); }
+  nav.scrolled .nav-links a.active { color: var(--wine); }
+  nav.scrolled .nav-links a.active::after { background: var(--wine); }
+  .nav-links a:hover { color: var(--wine); }
+  nav.scrolled .nav-links a:hover { color: var(--wine); }
+  .nav-cta { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; padding: 12px 28px; border: 1px solid rgba(255,255,255,.5); color: var(--white); text-decoration: none; font-weight: 400; border-radius: 2px; transition: all .4s; backdrop-filter: blur(10px); }
+  .nav-cta:hover { background: var(--wine); border-color: var(--wine); }
+  nav.scrolled .nav-cta { border-color: var(--wine); color: var(--wine); }
+  nav.scrolled .nav-cta:hover { background: var(--wine); color: var(--white); }
+  .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 36px; height: 36px; background: none; border: none; cursor: pointer; padding: 4px; z-index: 1100; }
+  .nav-burger span { display: block; height: 1.5px; width: 100%; background: var(--white); border-radius: 2px; transition: all .35s; transform-origin: center; }
+  nav.scrolled .nav-burger span { background: var(--wine); }
+  .nav-burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  .nav-mob-cta-item { display: none; }
+
+  /* PAGE HERO */
+  .page-hero { height: 50vh; min-height: 340px; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding-bottom: 70px; background: linear-gradient(140deg, #1a0f17 0%, #2b0222 50%, #0d0a0c 100%); }
+  .hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+  .hero-orb-1 { width: 500px; height: 500px; background: rgba(91,5,74,.4); top: -150px; right: 5%; animation: float 9s ease-in-out infinite; }
+  .hero-orb-2 { width: 280px; height: 280px; background: rgba(180,60,150,.2); bottom: -80px; left: 10%; animation: float 12s ease-in-out infinite reverse; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-22px)} }
+  .hero-grain { position: absolute; inset: 0; opacity: .04; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); background-size: 180px; }
+  .hero-content { position: relative; z-index: 2; padding: 0 80px; }
+  .page-breadcrumb { font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(245,230,240,.45); font-weight: 300; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .page-breadcrumb a { color: inherit; text-decoration: none; transition: color .3s; }
+  .page-breadcrumb a:hover { color: var(--blush); }
+  .page-hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 800; color: var(--white); line-height: 1.05; }
+  .page-hero-title span { color: var(--blush); }
+  .page-hero-sub { font-size: .82rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(245,230,240,.5); font-weight: 300; margin-top: 14px; }
+
+  /* COMMONS */
+  .section-label { font-size: .62rem; letter-spacing: .38em; text-transform: uppercase; color: var(--wine); font-weight: 500; display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--wine); }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700; line-height: 1.15; color: var(--text-dark); }
+  .section-title .accent { color: var(--wine); }
+  .reveal { opacity: 0; transform: translateY(26px); transition: all .8s cubic-bezier(.16,1,.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .divider { height: 1px; background: linear-gradient(to right, transparent, rgba(91,5,74,.12), transparent); margin: 0 80px; }
+
+  /* NOTICE BANNER */
+  .notice { padding: 22px 80px; background: rgba(91,5,74,.06); border-bottom: 1px solid rgba(91,5,74,.1); }
+  .notice-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; gap: 14px; font-size: .82rem; color: var(--text-mid); font-weight: 300; }
+  .notice-inner svg { width: 18px; height: 18px; color: var(--wine); flex-shrink: 0; }
+  .notice-inner strong { font-weight: 500; color: var(--text-dark); }
+
+  /* CATEGORY FILTER */
+  .price-filter { padding: 60px 80px 0; }
+  .price-filter-inner { max-width: 1280px; margin: 0 auto; }
+  .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-tab { padding: 11px 24px; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; border-radius: 100px; border: 1px solid var(--gray-soft); background: transparent; color: var(--text-light); cursor: pointer; transition: all .3s; font-family: 'DM Sans', sans-serif; }
+  .filter-tab.active, .filter-tab:hover { background: var(--wine); border-color: var(--wine); color: var(--white); }
+
+  /* PRICE TABLES */
+  .price-section { padding: 60px 80px; }
+  .price-inner { max-width: 1280px; margin: 0 auto; }
+  .price-block { margin-bottom: 56px; display: none; }
+  .price-block.active { display: block; }
+  .price-block-header { display: flex; align-items: center; gap: 20px; margin-bottom: 32px; }
+  .price-block-icon { width: 52px; height: 52px; border-radius: 12px; background: linear-gradient(135deg, rgba(91,5,74,.1), rgba(91,5,74,.05)); display: flex; align-items: center; justify-content: center; color: var(--wine); flex-shrink: 0; }
+  .price-block-icon svg { width: 24px; height: 24px; }
+  .price-block-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; color: var(--text-dark); }
+  .price-block-sub { font-size: .78rem; color: var(--text-light); margin-top: 3px; font-weight: 300; }
+
+  /* Price table */
+  .price-table { width: 100%; border-collapse: collapse; }
+  .price-table thead tr { border-bottom: 2px solid rgba(91,5,74,.12); }
+  .price-table thead th { padding: 14px 20px; font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; color: var(--text-light); font-weight: 500; text-align: left; }
+  .price-table thead th:last-child { text-align: right; }
+  .price-table tbody tr { border-bottom: 1px solid rgba(91,5,74,.06); transition: background .25s; }
+  .price-table tbody tr:hover { background: rgba(91,5,74,.03); }
+  .price-table tbody tr:last-child { border-bottom: none; }
+  .price-table td { padding: 20px; font-size: .9rem; color: var(--text-mid); font-weight: 300; vertical-align: middle; }
+  .price-table td:first-child { color: var(--text-dark); font-weight: 400; }
+  .price-table td:last-child { text-align: right; white-space: nowrap; }
+  .price-val { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--wine); }
+  .price-from { font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-light); font-weight: 300; display: block; margin-bottom: 2px; }
+  .price-tag { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: .6rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 500; }
+  .tag-popular { background: rgba(91,5,74,.08); color: var(--wine); }
+  .tag-complex { background: rgba(26,15,23,.06); color: var(--text-mid); }
+  .price-note-row td { padding: 10px 20px 20px; font-size: .75rem; color: var(--text-light); font-weight: 300; font-style: normal; }
+
+  /* Glass card for table */
+  .price-card { background: rgba(255,255,255,.8); backdrop-filter: blur(16px); border: 1px solid rgba(91,5,74,.08); border-radius: 14px; overflow: hidden; transition: box-shadow .4s; }
+  .price-card:hover { box-shadow: 0 20px 60px rgba(91,5,74,.08); }
+
+  /* EXTRA SERVICES */
+  .extras { padding: 0 80px 80px; }
+  .extras-inner { max-width: 1280px; margin: 0 auto; }
+  .extras-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 48px; }
+  .extra-card { padding: 28px 22px; background: var(--white); border: 1px solid var(--gray-soft); border-radius: 12px; position: relative; overflow: hidden; transition: all .4s cubic-bezier(.16,1,.3,1); }
+  .extra-card::before { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--wine); transition: width .5s; }
+  .extra-card:hover::before { width: 100%; }
+  .extra-card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(91,5,74,.09); border-color: rgba(91,5,74,.18); }
+  .extra-icon { width: 42px; height: 42px; border-radius: 10px; background: linear-gradient(135deg,rgba(91,5,74,.09),rgba(91,5,74,.04)); display: flex; align-items: center; justify-content: center; color: var(--wine); margin-bottom: 18px; }
+  .extra-icon svg { width: 20px; height: 20px; }
+  .extra-name { font-size: .82rem; font-weight: 500; color: var(--text-dark); margin-bottom: 10px; line-height: 1.4; }
+  .extra-price { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--wine); line-height: 1; }
+  .extra-unit { font-size: .62rem; color: var(--text-light); letter-spacing: .08em; text-transform: uppercase; display: block; margin-top: 4px; }
+
+  /* FAQ */
+  .faq { padding: 80px 80px; background: var(--white); }
+  .faq-inner { max-width: 1280px; margin: 0 auto; }
+  .faq-header { margin-bottom: 50px; }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .faq-item { border: 1px solid var(--gray-soft); border-radius: 10px; overflow: hidden; transition: border-color .3s; }
+  .faq-item:hover { border-color: rgba(91,5,74,.2); }
+  .faq-q { padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; font-size: .9rem; font-weight: 500; color: var(--text-dark); user-select: none; }
+  .faq-q svg { width: 18px; height: 18px; color: var(--wine); flex-shrink: 0; transition: transform .35s; }
+  .faq-item.open .faq-q svg { transform: rotate(45deg); }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .4s ease; font-size: .84rem; color: var(--text-mid); font-weight: 300; line-height: 1.75; }
+  .faq-item.open .faq-a { max-height: 300px; padding: 0 24px 20px; }
+
+  /* FORM SECTION */
+  .form-section { padding: 100px 80px; background: linear-gradient(160deg, var(--wine) 0%, var(--wine-deep) 60%, #1a0014 100%); position: relative; overflow: hidden; }
+  .form-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+  .form-orb-1 { width: 500px; height: 500px; background: rgba(180,60,150,.3); top: -150px; right: -50px; animation: float 10s ease-in-out infinite; }
+  .form-orb-2 { width: 400px; height: 400px; background: rgba(43,2,34,.5); bottom: -150px; left: -50px; animation: float 12s ease-in-out infinite reverse; }
+  .form-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: center; position: relative; z-index: 1; }
+  .form-left-label { font-size: .65rem; letter-spacing: .38em; text-transform: uppercase; color: rgba(245,230,240,.5); font-weight: 300; display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+  .form-left-label::before { content: ''; width: 30px; height: 1px; background: rgba(245,230,240,.3); }
+  .form-left-title { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 3.5vw, 2.9rem); font-weight: 700; color: var(--white); line-height: 1.2; margin-bottom: 20px; }
+  .form-left-title span { color: var(--blush); }
+  .form-left-sub { font-size: .88rem; color: rgba(255,255,255,.5); line-height: 1.8; font-weight: 300; margin-bottom: 36px; }
+  .form-perks { display: flex; flex-direction: column; gap: 14px; }
+  .form-perk { display: flex; align-items: center; gap: 12px; font-size: .84rem; color: rgba(255,255,255,.65); font-weight: 300; }
+  .form-perk-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blush); flex-shrink: 0; }
+  .form-right { background: rgba(255,255,255,.06); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 44px 40px; }
+  .form-right-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--white); margin-bottom: 28px; }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: .62rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 8px; font-weight: 400; }
+  .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 14px 18px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); border-radius: 6px; color: var(--white); font-family: 'DM Sans', sans-serif; font-size: .88rem; font-weight: 300; outline: none; transition: border-color .3s, background .3s; }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,.28); }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.12); }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-group select { appearance: none; cursor: pointer; color: rgba(255,255,255,.7); }
+  .form-group select option { background: #2b0222; color: white; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-submit { width: 100%; padding: 16px; margin-top: 8px; background: var(--white); color: var(--wine); font-family: 'DM Sans', sans-serif; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; font-weight: 600; border: none; border-radius: 6px; cursor: pointer; transition: all .3s; }
+  .form-submit:hover { background: var(--blush); transform: translateY(-2px); box-shadow: 0 12px 36px rgba(0,0,0,.25); }
+  .form-privacy { font-size: .62rem; color: rgba(255,255,255,.22); text-align: center; margin-top: 12px; letter-spacing: .05em; }
+
+  /* FOOTER */
+  footer { padding: 80px 80px 48px; background: #0d0a0c; border-top: 1px solid rgba(91,5,74,.3); }
+  .footer-inner { max-width: 1280px; margin: 0 auto; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,.06); margin-bottom: 40px; }
+  .footer-brand-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); letter-spacing: .08em; margin-bottom: 14px; display: block; }
+  .footer-tagline { font-size: .72rem; color: rgba(255,255,255,.3); line-height: 1.8; font-weight: 300; margin-bottom: 30px; }
+  .footer-socials { display: flex; gap: 14px; }
+  .social-btn { width: 38px; height: 38px; border: 1px solid rgba(255,255,255,.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.4); transition: all .3s; text-decoration: none; }
+  .social-btn svg { width: 16px; height: 16px; }
+  .social-btn:hover { border-color: var(--wine); color: var(--white); background: rgba(91,5,74,.3); }
+  .footer-col-title { font-size: .6rem; letter-spacing: .28em; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 18px; font-weight: 400; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { font-size: .8rem; color: rgba(255,255,255,.4); text-decoration: none; font-weight: 300; transition: color .3s; }
+  .footer-links a:hover { color: var(--blush); }
+  .footer-contact-item { display: flex; gap: 10px; align-items: flex-start; font-size: .78rem; color: rgba(255,255,255,.38); line-height: 1.6; font-weight: 300; margin-bottom: 12px; }
+  .footer-contact-item svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px; color: var(--wine); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: .65rem; color: rgba(255,255,255,.2); letter-spacing: .06em; }
+  .footer-legal { display: flex; gap: 26px; }
+  .footer-legal a { font-size: .65rem; color: rgba(255,255,255,.2); text-decoration: none; transition: color .3s; }
+  .footer-legal a:hover { color: rgba(255,255,255,.5); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    nav { padding: 22px 40px; }
+    nav.scrolled { padding: 14px 40px; }
+    .hero-content { padding: 0 40px; }
+    .notice { padding: 18px 40px; }
+    .price-filter { padding: 50px 40px 0; }
+    .price-section { padding: 50px 40px; }
+    .extras { padding: 0 40px 60px; }
+    .extras-grid { grid-template-columns: repeat(3,1fr); }
+    .faq { padding: 60px 40px; }
+    .form-section { padding: 80px 40px; }
+    footer { padding: 60px 40px 40px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .divider { margin: 0 40px; }
+  }
+  @media (max-width: 768px) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+    nav { padding: 18px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-burger { display: flex; }
+    .nav-cta { display: none; }
+    .nav-links { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(26,15,23,.97); backdrop-filter: blur(20px); flex-direction: column; align-items: center; justify-content: center; gap: 28px; z-index: 1050; opacity: 0; pointer-events: none; transform: translateY(-12px); transition: opacity .4s, transform .4s; }
+    .nav-links.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .nav-links a { font-size: 1.4rem; font-family: 'Playfair Display',serif; font-weight: 700; color: rgba(255,255,255,.85); }
+    nav.scrolled .nav-links a { color: rgba(255,255,255,.85); }
+    .nav-links a::after { display: none; }
+    .nav-mob-cta-item { display: block; margin-top: 8px; }
+    .page-hero { height: auto; min-height: 300px; padding: 120px 24px 52px; align-items: flex-end; }
+    .hero-content { padding: 0; }
+    .page-hero-title { font-size: clamp(2rem,9vw,3rem); }
+    .notice { padding: 16px 24px; }
+    .notice-inner { font-size: .78rem; }
+    .price-filter { padding: 36px 24px 0; }
+    .filter-tabs { gap: 6px; }
+    .filter-tab { padding: 9px 16px; font-size: .65rem; }
+    .price-section { padding: 36px 24px; }
+    .price-table td { padding: 14px 12px; font-size: .82rem; }
+    .price-table thead th { padding: 12px; font-size: .58rem; }
+    .price-val { font-size: 1rem; }
+    .extras { padding: 0 24px 56px; }
+    .extras-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .faq { padding: 56px 24px; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .form-section { padding: 70px 24px; }
+    .form-inner { grid-template-columns: 1fr; gap: 44px; }
+    .form-row { grid-template-columns: 1fr; }
+    .form-right { padding: 32px 24px; }
+    footer { padding: 56px 24px 32px; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; padding-bottom: 40px; }
+    .footer-bottom { flex-direction: column; gap: 14px; text-align: center; }
+    .footer-legal { justify-content: center; }
+    .divider { margin: 0 24px; }
+    .section-title { font-size: clamp(1.8rem, 6.5vw, 2.5rem); }
+  }
+  @media (max-width: 420px) {
+    .extras-grid { grid-template-columns: 1fr; }
+    .price-table { font-size: .78rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="/" class="nav-logo">И. В. Константинова</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="/" class="nav-mob-link">На главную</a></li>
+    <li><a href="/about" class="nav-mob-link">О докторе</a></li>
+    <li><a href="/examples" class="nav-mob-link">Примеры работ</a></li>
+    <li><a href="/price" class="nav-mob-link active">Цены</a></li>
+    <li><a href="/contacts" class="nav-mob-link">Контакты</a></li>
+    <li class="nav-mob-cta-item"><a href="#consultation" class="nav-cta">Записаться</a></li>
+  </ul>
+  <a href="#consultation" class="nav-cta">Записаться на консультацию</a>
+  <button class="nav-burger" id="navBurger" aria-label="Меню">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-content">
+    <div class="page-breadcrumb">
+      <a href="/">Главная</a>
+      <span>·</span>
+      Цены
+    </div>
+    <h1 class="page-hero-title">Стоимость <span>операций</span></h1>
+    <p class="page-hero-sub">Прозрачное ценообразование · Без скрытых платежей</p>
+  </div>
+</section>
+
+<!-- NOTICE -->
+<div class="notice">
+  <div class="notice-inner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span><strong>Важно:</strong> в указанную стоимость операций <strong>не входят</strong> наркоз, импланты и пребывание в стационаре. Точная стоимость определяется на личной консультации после осмотра.</span>
+  </div>
+</div>
+
+<!-- FILTER TABS -->
+<div class="price-filter">
+  <div class="price-filter-inner">
+    <div class="filter-tabs reveal">
+      <button class="filter-tab active" onclick="showCategory('all',this)">Все операции</button>
+      <button class="filter-tab" onclick="showCategory('breast',this)">Хирургия груди</button>
+      <button class="filter-tab" onclick="showCategory('body',this)">Коррекция тела</button>
+      <button class="filter-tab" onclick="showCategory('face',this)">Хирургия лица</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRICE BLOCKS -->
+<section class="price-section">
+  <div class="price-inner">
+
+    <!-- BREAST -->
+    <div class="price-block active reveal" id="block-breast" data-cat="breast">
+      <div class="price-block-header">
+        <div class="price-block-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 2 5 6 5 10c0 5 7 12 7 12s7-7 7-12c0-4-3-8-7-8z"/></svg>
+        </div>
+        <div>
+          <div class="price-block-title">Хирургия груди</div>
+          <div class="price-block-sub">Увеличение, подтяжка, коррекция формы и размера</div>
+        </div>
+      </div>
+      <div class="price-card">
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th>Операция</th>
+              <th>Описание</th>
+              <th>Стоимость</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Увеличение груди (аугментация)<span class="price-tag tag-popular" style="margin-left:10px">Популярно</span></td>
+              <td>Эндопротезирование анатомическими или круглыми имплантами</td>
+              <td><span class="price-from">от</span><span class="price-val">120 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Увеличение и подтяжка груди</td>
+              <td>Мастопексия с одновременным эндопротезированием</td>
+              <td><span class="price-from">от</span><span class="price-val">160 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Подтяжка груди без имплантов</td>
+              <td>Мастопексия — коррекция формы и положения без увеличения</td>
+              <td><span class="price-from">от</span><span class="price-val">130 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Уменьшение груди</td>
+              <td>Редукционная маммопластика с коррекцией формы</td>
+              <td><span class="price-from">от</span><span class="price-val">140 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Коррекция асимметрии груди</td>
+              <td>Выравнивание объёма и формы при выраженной асимметрии</td>
+              <td><span class="price-from">от</span><span class="price-val">100 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Замена имплантов</td>
+              <td>Удаление и установка новых эндопротезов</td>
+              <td><span class="price-from">от</span><span class="price-val">110 000 ₽</span></td>
+            </tr>
+            <tr class="price-note-row">
+              <td colspan="3">* Стоимость имплантов оплачивается отдельно. Цена импланта зависит от производителя и типа (от 30 000 до 120 000 ₽ за пару)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="price-block active reveal" id="block-body" data-cat="body">
+      <div class="price-block-header">
+        <div class="price-block-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div>
+          <div class="price-block-title">Коррекция тела</div>
+          <div class="price-block-sub">Липосакция, абдоминопластика, коррекция зон тела</div>
+        </div>
+      </div>
+      <div class="price-card">
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th>Операция</th>
+              <th>Описание</th>
+              <th>Стоимость</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Абдоминопластика (стандартная)</td>
+              <td>Иссечение кожно-жировых излишков с укреплением апоневроза</td>
+              <td><span class="price-from">от</span><span class="price-val">130 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Абдоминопластика (мини)</td>
+              <td>Коррекция нижней части живота с минимальным рубцом</td>
+              <td><span class="price-from">от</span><span class="price-val">90 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Липосакция (1 зона)</td>
+              <td>VASER или классическая липосакция одной анатомической зоны</td>
+              <td><span class="price-from">от</span><span class="price-val">55 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Липосакция (2–3 зоны)<span class="price-tag tag-popular" style="margin-left:10px">Популярно</span></td>
+              <td>Комплексная коррекция нескольких зон за одну операцию</td>
+              <td><span class="price-from">от</span><span class="price-val">95 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Брахиопластика</td>
+              <td>Подтяжка кожи плеч, устранение птоза внутренней поверхности</td>
+              <td><span class="price-from">от</span><span class="price-val">85 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Коррекция гинекомастии</td>
+              <td>Удаление лишней железистой и жировой ткани у мужчин</td>
+              <td><span class="price-from">от</span><span class="price-val">75 000 ₽</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FACE -->
+    <div class="price-block active reveal" id="block-face" data-cat="face">
+      <div class="price-block-header">
+        <div class="price-block-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="5"/><path d="M7 13c-2 1-4 3-4 6h18c0-3-2-5-4-6"/></svg>
+        </div>
+        <div>
+          <div class="price-block-title">Хирургия лица</div>
+          <div class="price-block-sub">Омоложение, коррекция черт и контуров лица</div>
+        </div>
+      </div>
+      <div class="price-card">
+        <table class="price-table">
+          <thead>
+            <tr>
+              <th>Операция</th>
+              <th>Описание</th>
+              <th>Стоимость</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Блефаропластика верхних век<span class="price-tag tag-popular" style="margin-left:10px">Популярно</span></td>
+              <td>Иссечение избытка кожи верхних век, устранение нависания</td>
+              <td><span class="price-from">от</span><span class="price-val">55 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Блефаропластика нижних век</td>
+              <td>Коррекция жировых грыж и дряблости нижних век</td>
+              <td><span class="price-from">от</span><span class="price-val">65 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Блефаропластика (4 века)</td>
+              <td>Комплексная коррекция верхних и нижних век</td>
+              <td><span class="price-from">от</span><span class="price-val">110 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Ринопластика</td>
+              <td>Коррекция формы носа, устранение горбинки, изменение кончика</td>
+              <td><span class="price-from">от</span><span class="price-val">130 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Септопластика</td>
+              <td>Коррекция искривлённой носовой перегородки</td>
+              <td><span class="price-from">от</span><span class="price-val">65 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Подтяжка лица (SMAS-лифтинг)<span class="price-tag tag-complex" style="margin-left:10px">Комплексно</span></td>
+              <td>Глубокая подтяжка лица с воздействием на SMAS-слой</td>
+              <td><span class="price-from">от</span><span class="price-val">200 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Подтяжка шеи</td>
+              <td>Платизмопластика, устранение «индюшиной шеи»</td>
+              <td><span class="price-from">от</span><span class="price-val">90 000 ₽</span></td>
+            </tr>
+            <tr>
+              <td>Отопластика</td>
+              <td>Коррекция формы и положения ушных раковин</td>
+              <td><span class="price-from">от</span><span class="price-val">60 000 ₽</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXTRA SERVICES -->
+<div class="extras">
+  <div class="extras-inner">
+    <div class="reveal">
+      <div class="section-label">Дополнительные услуги</div>
+      <h2 class="section-title">Оплачиваются <span class="accent">отдельно</span></h2>
+    </div>
+    <div class="extras-grid">
+      <div class="extra-card reveal" style="transition-delay:0s">
+        <div class="extra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+        <div class="extra-name">Эндотрахеальный наркоз</div>
+        <div class="extra-price">45 000 ₽</div>
+        <span class="extra-unit">за операцию</span>
+      </div>
+      <div class="extra-card reveal" style="transition-delay:.07s">
+        <div class="extra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 9.5V5a.5.5 0 011 0v4.5M4.5 9.5h1M8 5v4.5M8 9.5H5.5M12 5l-1.5 4.5M12 5l1.5 4.5M10.5 9.5h3"/><rect x="2" y="3" width="20" height="18" rx="2"/></svg></div>
+        <div class="extra-name">Внутривенная анестезия</div>
+        <div class="extra-price">18 500 ₽</div>
+        <span class="extra-unit">за операцию</span>
+      </div>
+      <div class="extra-card reveal" style="transition-delay:.14s">
+        <div class="extra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="extra-name">Двухместная палата</div>
+        <div class="extra-price">16 000 ₽</div>
+        <span class="extra-unit">в сутки</span>
+      </div>
+      <div class="extra-card reveal" style="transition-delay:.21s">
+        <div class="extra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="extra-name">Одноместная палата</div>
+        <div class="extra-price">21 000 ₽</div>
+        <span class="extra-unit">в сутки</span>
+      </div>
+      <div class="extra-card reveal" style="transition-delay:.28s">
+        <div class="extra-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="extra-name">Дневной стационар</div>
+        <div class="extra-price">9 000 ₽</div>
+        <span class="extra-unit">в сутки</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-inner">
+    <div class="faq-header reveal">
+      <div class="section-label">Вопросы и ответы</div>
+      <h2 class="section-title">Часто <span class="accent">спрашивают</span></h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item reveal">
+        <div class="faq-q">
+          Почему не указана точная цена?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Точная стоимость определяется на личной консультации после осмотра, так как зависит от сложности случая, индивидуальных анатомических особенностей, объёма вмешательства и выбора расходных материалов. Все цены на сайте — ориентировочные.</div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:.07s">
+        <div class="faq-q">
+          Что включено в стоимость операции?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">В стоимость операции входит: работа хирурга, операционная бригада, предоперационная консультация, операционный материал и расходники. Отдельно оплачиваются: наркоз, импланты, пребывание в стационаре и дополнительные исследования.</div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:.14s">
+        <div class="faq-q">
+          Возможна ли рассрочка или кредит?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Да, доступны различные варианты оплаты, в том числе рассрочка и медицинский кредит. Подробности уточняйте на консультации или по телефону. Первичная консультация — бесплатная.</div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:.21s">
+        <div class="faq-q">
+          Какие импланты используются и сколько они стоят?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Используются импланты ведущих мировых производителей: Mentor, Motiva, Silimed, Polytech. Стоимость варьируется от 30 000 до 120 000 ₽ за пару в зависимости от бренда, типа и размера. Выбор импланта обсуждается совместно с доктором.</div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:.28s">
+        <div class="faq-q">
+          Как долго длится восстановление?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Сроки восстановления зависят от вида операции. Большинство пациентов возвращаются к привычной жизни через 2–3 недели. Полное восстановление занимает от 1 до 3 месяцев. Доктор подробно объяснит всё на консультации.</div>
+      </div>
+      <div class="faq-item reveal" style="transition-delay:.35s">
+        <div class="faq-q">
+          Бесплатна ли первичная консультация?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Да, первичная консультация с доктором Константиновой проводится бесплатно. На ней вы сможете обсудить ваши пожелания, пройти осмотр, получить индивидуальный план лечения и точную стоимость.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORM / CTA -->
+<section class="form-section" id="consultation">
+  <div class="form-orb form-orb-1"></div>
+  <div class="form-orb form-orb-2"></div>
+  <div class="form-inner">
+    <div class="reveal">
+      <div class="form-left-label">Запись на приём</div>
+      <h2 class="form-left-title">Записаться на <span>бесплатную</span> консультацию</h2>
+      <p class="form-left-sub">Первая встреча с доктором Константиновой — это личная беседа, осмотр и честный разговор о ваших целях. Без давления, без обязательств.</p>
+      <div class="form-perks">
+        <div class="form-perk"><span class="form-perk-dot"></span>Консультация бесплатная</div>
+        <div class="form-perk"><span class="form-perk-dot"></span>Индивидуальный осмотр и план</div>
+        <div class="form-perk"><span class="form-perk-dot"></span>Точная стоимость именно для вас</div>
+        <div class="form-perk"><span class="form-perk-dot"></span>Ответы на все ваши вопросы</div>
+        <div class="form-perk"><span class="form-perk-dot"></span>Строгая конфиденциальность</div>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.15s">
+      <div class="form-right">
+        <div class="form-right-title">Оставить заявку</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Имя</label>
+            <input type="text" placeholder="Ваше имя">
+          </div>
+          <div class="form-group">
+            <label>Телефон</label>
+            <input type="tel" placeholder="+7 (___) ___-__-__">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" placeholder="example@mail.ru">
+        </div>
+        <div class="form-group">
+          <label>Интересующая операция</label>
+          <select>
+            <option value="" disabled selected>Выберите процедуру</option>
+            <option>Увеличение груди</option>
+            <option>Увеличение и подтяжка груди</option>
+            <option>Подтяжка груди без имплантов</option>
+            <option>Уменьшение груди</option>
+            <option>Абдоминопластика</option>
+            <option>Липосакция</option>
+            <option>Брахиопластика</option>
+            <option>Блефаропластика</option>
+            <option>Ринопластика</option>
+            <option>Подтяжка лица</option>
+            <option>Другое</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Комментарий</label>
+          <textarea placeholder="Опишите ваш запрос или вопрос..."></textarea>
+        </div>
+        <button class="form-submit">Записаться на бесплатную консультацию</button>
+        <p class="form-privacy">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <span class="footer-brand-name">И. В. Константинова</span>
+        <p class="footer-tagline">Сертифицированный пластический хирург<br>Искусство естественной красоты<br>Вологда, Россия</p>
+        <div class="footer-socials">
+          <a href="https://t.me/adm_irina_konstantinova" class="social-btn" aria-label="Telegram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+          </a>
+          <a href="https://wa.me/79269262660" class="social-btn" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+          </a>
+          <a href="https://vk.com/doctorkonstantinova" class="social-btn" aria-label="ВКонтакте">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h4l2 5 2-5h4l-4 9H6L2 7z"/><path d="M13 7h4v3c0 2 2 4 4 4v2c-2 0-4-1-4-3v3h-4V7z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <p class="footer-col-title">Навигация</p>
+        <ul class="footer-links">
+          <li><a href="/">На главную</a></li>
+          <li><a href="/about">О докторе</a></li>
+          <li><a href="/examples">Примеры работ</a></li>
+          <li><a href="/price">Цены</a></li>
+          <li><a href="/contacts">Контакты</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Процедуры</p>
+        <ul class="footer-links">
+          <li><a href="/examples">Увеличение груди</a></li>
+          <li><a href="/examples#bleforo">Блефаропластика</a></li>
+          <li><a href="/examples#abdomino">Абдоминопластика</a></li>
+          <li><a href="/examples#decrease">Уменьшение груди</a></li>
+          <li><a href="/examples#brahio">Брахиопластика</a></li>
+          <li><a href="/examples#gino">Гинекомастия</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-col-title">Контакты</p>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.77a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.1a16 16 0 006 6l.43-.43a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          +7 (926) 926-26-60
+        </div>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          doctor.konstantinova@yandex.ru
+        </div>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Вологда, Россия
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Константинова Ирина Валерьевна. Все права защищены.</p>
+      <div class="footer-legal">
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Условия использования</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.extra-card,.faq-item,.price-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.classList.add('cursor-hover');ring.classList.add('cursor-hover');});
+    el.addEventListener('mouseleave',()=>{cursor.classList.remove('cursor-hover');ring.classList.remove('cursor-hover');});
+  });
+
+  // Nav scroll
+  const nav=document.getElementById('mainNav');
+  const handleScroll=()=>nav.classList.toggle('scrolled',window.scrollY>60);
+  window.addEventListener('scroll',handleScroll);
+  handleScroll();
+
+  // Progress bar
+  const pb=document.getElementById('progressBar');
+  window.addEventListener('scroll',()=>{pb.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';});
+
+  // Hamburger
+  const burger=document.getElementById('navBurger');
+  const navLinks=document.getElementById('navLinks');
+  burger.addEventListener('click',()=>{
+    burger.classList.toggle('open');
+    navLinks.classList.toggle('open');
+    document.body.style.overflow=navLinks.classList.contains('open')?'hidden':'';
+  });
+  document.querySelectorAll('.nav-mob-link,.nav-mob-cta-item a').forEach(l=>{
+    l.addEventListener('click',()=>{burger.classList.remove('open');navLinks.classList.remove('open');document.body.style.overflow='';});
+  });
+
+  // Scroll reveal
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Category filter
+  function showCategory(cat, btn) {
+    document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.price-block').forEach(block=>{
+      if(cat==='all' || block.dataset.cat===cat){
+        block.classList.add('active');
+      } else {
+        block.classList.remove('active');
+      }
+    });
+  }
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.addEventListener('click',()=>{
+      const item=q.parentElement;
+      const wasOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+</script>
+</body>
+</html>
